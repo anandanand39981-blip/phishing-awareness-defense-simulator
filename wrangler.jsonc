@@ -4,7 +4,7 @@
  */
  {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "vite-reference",
+	"name": "phish-defense-educat-1kj-c5itp2shp0ik03-tz",
 	"main": "worker/index.ts",
 	"compatibility_date": "2025-04-24",
 	"assets": {
