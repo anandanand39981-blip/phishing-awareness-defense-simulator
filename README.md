@@ -1,6 +1,6 @@
 # Phish Defense Educat
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/anandanand39981-blip/phishing-awareness-defense-simulator)
 
 ## Overview
 
@@ -116,7 +116,7 @@ await convex.mutation(api.files.saveFileMetadata, { storageId, filename, mimeTyp
    - Bind Workers to Pages project via `wrangler.jsonc`.
    - Set env vars in Cloudflare dashboard.
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/anandanand39981-blip/phishing-awareness-defense-simulator)
 
 ### Production Env Vars
 
