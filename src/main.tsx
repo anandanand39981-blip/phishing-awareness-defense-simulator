@@ -15,7 +15,7 @@ import { convex } from '@/lib/convex';
 import '@/index.css'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { HomePage } from '@/pages/HomePage'
-import { AboutPage } from '@/pages/AboutPage'
+import DefenseGuidePage from '@/pages/DefenseGuidePage'
 import { SimulatorPage } from '@/pages/SimulatorPage'
 import { ThreatVisualizerPage } from '@/pages/ThreatVisualizerPage'
 const queryClient = new QueryClient();
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     errorElement: <RouteErrorBoundary />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/about", element: <AboutPage /> },
+      { path: "/defense-guide", element: <DefenseGuidePage /> },
       { path: "/simulator", element: <SimulatorPage /> },
       { path: "/visualizer", element: <ThreatVisualizerPage /> },
     ],

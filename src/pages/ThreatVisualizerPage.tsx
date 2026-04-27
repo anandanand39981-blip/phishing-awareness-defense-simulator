@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { useMutation } from 'convex/react';
+import { api } from "../../convex/_generated/api";
 import { ShieldAlert, Terminal, Eye, Database, Activity } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -20,6 +22,13 @@ const MOCK_DATA = [
   { id: '4', user: 'sarah.m@webmail.com', origin: 'MockSocial_Vector_A', timestamp: '2 hrs ago', status: 'SUCCESS' },
 ];
 export function ThreatVisualizerPage() {
+  const markCompleted = useMutation(api.progress.markCompleted);
+
+  useEffect(() => {
+    // Viewing the dashboard is completion of this module's lesson
+    markCompleted({ moduleId: 'visualizer' }).catch(() => {});
+  }, [markCompleted]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="py-8 md:py-10 lg:py-12">
