@@ -1,149 +1,142 @@
-// Home page of the app, Currently a demo page for demonstration.
-// Please rewrite this file to implement your own logic. Do not replace or delete it, simply rewrite this HomePage.tsx file.
-import { useEffect, useState, useMemo } from 'react'
-import { Sparkles } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/components/ThemeToggle'
-import { Toaster, toast } from '@/components/ui/sonner'
-
-// Convex Auth block
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ShieldAlert, LayoutDashboard, FileWarning, ArrowRight, ShieldCheck, Lock } from 'lucide-react';
 import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { SignInForm } from "../components/SignInForm";
-import { SignOutButton } from "../components/SignOutButton";
-import { TemplateDemo, HAS_TEMPLATE_DEMO } from '@/components/TemplateDemo';
-
-//import { useQuery, useMutation } from 'convex/react';
-//import { api } from '@convex/_generated/api';
-
-// Timer store: independent slice with a clear, minimal API, for demonstration
-function formatDuration(ms: number): string {
-  const total = Math.max(0, Math.floor(ms / 1000))
-  const m = Math.floor(total / 60)
-  const s = total % 60
-  return `${m}:${s.toString().padStart(2, '0')}`
-}
-
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { SignOutButton } from '@/components/SignOutButton';
+import { SignInForm } from '@/components/SignInForm';
 export function HomePage() {
-  // Select only what is needed to avoid unnecessary re-renders
-  const [coins, setCoins] = useState(0)
-  const [isRunning, setIsRunning] = useState(false)
-  const [startedAt, setStartedAt] = useState<number | null>(null)
-  const [elapsedMs, setElapsedMs] = useState(0)
-
-  useEffect(() => {
-    if (!isRunning || startedAt === null) return
-
-    const t = setInterval(() => {
-      setElapsedMs(Date.now() - startedAt)
-    }, 250)
-
-    return () => clearInterval(t)
-  }, [isRunning, startedAt])
-
-  const formatted = useMemo(() => formatDuration(elapsedMs), [elapsedMs])
-
-  const onPleaseWait = () => {
-    setCoins((c) => c + 1)
-
-    if (!isRunning) {
-      // Resume from the current elapsed time
-      setStartedAt(Date.now() - elapsedMs)
-      setIsRunning(true)
-      toast.success('Building your app…', {
-        description: "Hang tight, we're setting everything up.",
-      })
-      return
-    } 
-
-      setIsRunning(false)
-      toast.info('Taking a short pause', {
-        description: 'We\'ll continue shortly.',
-      })
-  }
-
-  const onReset = () => {
-    setCoins(0)
-    setIsRunning(false)
-    setStartedAt(null)
-    setElapsedMs(0)
-    toast('Reset complete')
-  }
-
-  const onAddCoin = () => {
-    setCoins((c) => c + 1)
-    toast('Coin added')
-  }
-
-  const loggedInUser = useQuery(api.auth.loggedInUser)
-
+  const loggedInUser = useQuery(api.auth.loggedInUser);
+  const modules = [
+    {
+      title: "Awareness Simulator",
+      description: "Experience a live phishing simulation and learn to spot malicious red flags in a safe environment.",
+      icon: ShieldAlert,
+      href: "/simulator",
+      color: "text-red-500",
+      bg: "bg-red-500/10",
+      border: "border-red-500/20"
+    },
+    {
+      title: "Threat Visualizer",
+      description: "See what attackers see. Review mock telemetry of intercepted credentials to understand the impact.",
+      icon: LayoutDashboard,
+      href: "/visualizer",
+      color: "text-blue-500",
+      bg: "bg-blue-500/10",
+      border: "border-blue-500/20"
+    },
+    {
+      title: "Defense Guide",
+      description: "Interactive guides for developers on implementing phishing-resistant MFA and FIDO2 standards.",
+      icon: Lock,
+      href: "/about",
+      color: "text-emerald-500",
+      bg: "bg-emerald-500/10",
+      border: "border-emerald-500/20"
+    }
+  ];
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    show: { y: 0, opacity: 1 }
+  };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-4 overflow-hidden relative">
-        <ThemeToggle />
-        <SignOutButton />
-        <div className="absolute inset-0 bg-gradient-rainbow opacity-10 dark:opacity-20 pointer-events-none" />
-        <div className="text-center space-y-8 relative z-10 animate-fade-in w-full">
-          <div className="flex justify-center">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-primary floating">
-              <Sparkles className="w-8 h-8 text-white rotating" />
-            </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-8 md:py-10 lg:py-12">
+        <header className="flex justify-between items-center mb-12">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-8 w-8 text-blue-500" />
+            <h2 className="text-xl font-bold tracking-tight">PhishDefense</h2>
           </div>
+          <div className="flex items-center gap-4">
+            <ThemeToggle className="static" />
+            <SignOutButton />
+          </div>
+        </header>
+        <section className="text-center space-y-6 mb-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-sm font-medium mb-4"
+          >
+            <ShieldAlert className="w-4 h-4" />
+            Educational Cybersecurity Platform
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-6xl font-display font-bold tracking-tight"
+          >
+            Master the Art of <span className="text-gradient">Cyber Defense</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty"
+          >
+            An interactive simulator designed to train users on identifying phishing attempts and guide developers towards modern, secure authentication.
+          </motion.p>
           <Authenticated>
-            <p className="text-xl text-secondary">
-              Welcome back, {loggedInUser?.email ?? "friend"}!
-            </p>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-sm text-blue-500/80 font-medium"
+            >
+              Logged in as {loggedInUser?.email}
+            </motion.p>
           </Authenticated>
-          <Unauthenticated>
-            <p className="text-xl text-secondary">Sign in to get started</p>
-          </Unauthenticated>
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-balance leading-tight">
-            Creating your <span className="text-gradient">app</span>
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto text-pretty">
-            Your application would be ready soon.
-          </p>
-          {HAS_TEMPLATE_DEMO ? (
-            <div className="max-w-5xl mx-auto text-left">
-              <TemplateDemo />
-            </div>
-          ) : (
-            <>
-              <div className="flex justify-center gap-4">
-                <Button 
-                  size="lg"
-                  onClick={onPleaseWait}
-                  className="btn-gradient px-8 py-4 text-lg font-semibold hover:-translate-y-0.5 transition-all duration-200"
-                  aria-live="polite"
-                >
-                  Please Wait
-                </Button>
-              </div>
-              <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-                <div>
-                  Time elapsed: <span className="font-medium tabular-nums text-foreground">{formatted}</span>
-                </div>
-                <div>
-                  Coins: <span className="font-medium tabular-nums text-foreground">{coins}</span>
-                </div>
-              </div>
-              <div className="flex justify-center gap-2">
-                <Button variant="outline" size="sm" onClick={onReset}>
-                  Reset
-                </Button>
-                <Button variant="outline" size="sm" onClick={onAddCoin}>
-                  Add Coin
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
+        </section>
         <Unauthenticated>
-          <SignInForm />
+          <div className="max-w-md mx-auto mb-20 p-8 glass-dark rounded-2xl border border-white/10 shadow-2xl">
+            <h3 className="text-xl font-semibold mb-6 text-center">Get Started</h3>
+            <SignInForm />
+          </div>
         </Unauthenticated>
-        <footer className="absolute bottom-8 text-center text-muted-foreground/80">
-          <p>Built with love at Andromo</p>
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          {modules.map((module) => (
+            <motion.div key={module.title} variants={item}>
+              <Card className="h-full bg-card/50 backdrop-blur-sm border-muted hover:border-blue-500/50 transition-all duration-300 group cursor-default">
+                <CardHeader>
+                  <div className={`w-12 h-12 rounded-lg ${module.bg} flex items-center justify-center mb-4 transition-transform group-hover:scale-110`}>
+                    <module.icon className={`w-6 h-6 ${module.color}`} />
+                  </div>
+                  <CardTitle className="text-xl">{module.title}</CardTitle>
+                  <CardDescription className="text-base">
+                    {module.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button asChild variant="ghost" className="p-0 hover:bg-transparent group-hover:text-blue-500 transition-colors">
+                    <Link to={module.href} className="flex items-center gap-2 font-semibold">
+                      Launch Module <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </motion.div>
+        <footer className="mt-24 pt-8 border-t border-muted text-center text-muted-foreground">
+          <p>© 2024 PhishDefense Educator. Built for security awareness training.</p>
         </footer>
-        <Toaster richColors closeButton />
       </div>
-  )
+    </div>
+  );
 }

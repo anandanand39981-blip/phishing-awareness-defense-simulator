@@ -1,6 +1,5 @@
-/* This is a demo sidebar. **COMPULSORY** Edit this file to customize the sidebar OR remove it from appLayout OR don't use appLayout at all */
 import React from "react";
-import { Home, Layers, Compass, Star, Settings, LifeBuoy } from "lucide-react";
+import { Home, ShieldAlert, LayoutDashboard, Compass, Star, ShieldCheck } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -14,57 +13,66 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarMenuAction,
-  SidebarMenuBadge,
 } from "@/components/ui/sidebar";
-
 const navItems = [
-  { label: "Home", path: "/", icon: Home },
-  { label: "About", path: "/about", icon: Compass },
+  { label: "Dashboard", path: "/", icon: Home },
+  { label: "Awareness Simulator", path: "/simulator", icon: ShieldAlert },
+  { label: "Threat Visualizer", path: "/visualizer", icon: LayoutDashboard },
+  { label: "Defense Guide", path: "/about", icon: ShieldCheck },
 ];
-
 export function AppSidebar(): JSX.Element {
   const { pathname } = useLocation();
-
   return (
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-1">
-          <div className="h-6 w-6 rounded-md bg-gradient-to-br from-indigo-500 to-purple-500" />
-          <span className="text-sm font-medium">Demo Sidebar</span>
+          <div className="h-6 w-6 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+            <ShieldCheck className="h-4 w-4 text-white" />
+          </div>
+          <span className="text-sm font-bold tracking-tight">PhishDefense</span>
         </div>
-        <SidebarInput placeholder="Search" />
+        <SidebarInput placeholder="Search modules..." />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
+          <SidebarGroupLabel>Training Modules</SidebarGroupLabel>
           <SidebarMenu>
             {navItems.map((item) => (
               <SidebarMenuItem key={item.path}>
                 <SidebarMenuButton asChild isActive={pathname === item.path}>
-                  <Link to={item.path}><item.icon /> <span>{item.label}</span></Link>
+                  <Link to={item.path} className="flex items-center gap-3">
+                    <item.icon className="h-4 w-4" /> 
+                    <span>{item.label}</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
         </SidebarGroup>
-
         <SidebarSeparator />
-
         <SidebarGroup>
-          <SidebarGroupLabel>Quick Links</SidebarGroupLabel>
+          <SidebarGroupLabel>Resources</SidebarGroupLabel>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === "/"}>
-                <Link to="/"><Star /> <span>Starred</span></Link>
+              <SidebarMenuButton asChild>
+                <Link to="/about"><Compass className="h-4 w-4" /> <span>Methodology</span></Link>
               </SidebarMenuButton>
-              <SidebarMenuBadge>5</SidebarMenuBadge>
             </SidebarMenuItem>
-
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link to="/"><Star className="h-4 w-4" /> <span>Achievements</span></Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="px-2 text-xs text-muted-foreground">A simple shadcn sidebar</div>
+        <div className="px-4 py-4">
+          <div className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/10 text-[10px] text-muted-foreground leading-relaxed">
+            <p className="font-bold text-blue-500 uppercase tracking-widest mb-1">Status</p>
+            System Active: Training environment ready.
+          </div>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

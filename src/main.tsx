@@ -16,9 +16,9 @@ import '@/index.css'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { HomePage } from '@/pages/HomePage'
 import { AboutPage } from '@/pages/AboutPage'
-
+import { SimulatorPage } from '@/pages/SimulatorPage'
+import { ThreatVisualizerPage } from '@/pages/ThreatVisualizerPage'
 const queryClient = new QueryClient();
-
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
@@ -26,10 +26,11 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/about", element: <AboutPage /> },
+      { path: "/simulator", element: <SimulatorPage /> },
+      { path: "/visualizer", element: <ThreatVisualizerPage /> },
     ],
   },
 ]);
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

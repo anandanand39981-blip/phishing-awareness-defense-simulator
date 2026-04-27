@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldAlert, Info, AlertCircle, CheckCircle2, Globe, Lock, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useMutation } from 'convex/react';
-import { api } from "../../convex/_generated/api";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -43,16 +41,9 @@ export function SimulatorPage() {
       severity: 'high'
     }
   };
-  const markCompleted = useMutation(api.progress.markCompleted);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsCompleted(true);
-    try {
-      markCompleted({ moduleId: 'simulator' });
-    } catch (err) {
-      console.error("Failed to mark simulator as completed", err);
-    }
     toast.success("Simulation Complete: Attack Intercepted!");
   };
   return (
